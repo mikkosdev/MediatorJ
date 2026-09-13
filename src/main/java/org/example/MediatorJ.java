@@ -1,15 +1,13 @@
 package org.example;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import org.example.aspects.Aspect;
+
+import java.util.*;
 
 public class MediatorJ<T extends Handler> {
 
-    private ArrayList<Handler> _handlers = new ArrayList<>();
+    private List<Handler> handlers = new ArrayList<>();
+    private List<Aspect> aspects = new ArrayList<>();
 
     public static MediatorJ create() {
         return new MediatorJ();
@@ -21,7 +19,7 @@ public class MediatorJ<T extends Handler> {
      * @param handler   Handler must implement IHandler interface
      */
     public void register(T handler) {
-        _handlers.add(handler);
+        handlers.add(handler);
 
         System.out.println("Registering: " + handler);
         System.out.println("handler.getClass(): " + handler.getClazz());
@@ -38,11 +36,17 @@ public class MediatorJ<T extends Handler> {
         System.out.println("Sending");
 
         // Find handler that handles the request type
-        for(Handler h : _handlers) {
+        for(Handler h : handlers) {
             System.out.println("Iterating: " + h.getClazz() + " vs " + req.getClass());
             if (h.getClazz() == req.getClass()) {
                 System.out.println("Found:" + req.getClass());
             }
+        }
+    }
+
+    private void runAspects() {
+        for (Aspect a : aspects) {
+
         }
     }
 }

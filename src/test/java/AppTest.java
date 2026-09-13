@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.example.Handler;
 import org.example.IHandler;
 import org.example.IRequest;
+import org.example.annotations.AspectClass;
+import org.example.aspects.Aspect;
 import org.junit.jupiter.api.Test;
 import org.example.MediatorJ;
 
@@ -52,6 +54,13 @@ public class AppTest {
 
         public void handle(MyRequest request) {
             System.out.println("MyHandler here");
+        }
+    }
+
+    @AspectClass(index = 0)
+    private class MyAspect extends Aspect {
+        public void execute() {
+            System.out.println("This is run every time a request is being handled.");
         }
     }
 }
