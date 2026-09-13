@@ -7,7 +7,7 @@ package org.example;
  * @see org.example.IRequest
  */
 public abstract class Handler<T> implements IHandler {
-    private Class<T> clazz;
+    private final Class<T> clazz;
 
     public Handler(Class<T> request) {
         this.clazz = request;
