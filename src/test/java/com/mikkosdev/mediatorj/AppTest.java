@@ -1,27 +1,34 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+package com.mikkosdev.mediatorj;
 
 import org.example.Handler;
-import org.example.IHandler;
 import org.example.IRequest;
+import org.example.MediatorJ;
 import org.example.annotations.AspectClass;
 import org.example.aspects.Aspect;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.example.MediatorJ;
+import org.mockito.Mockito;
+
+import static org.mockito.ArgumentMatchers.any;
 
 public class AppTest {
 
+    private MediatorJ mediator;
+    private Handler myHandler;
+
+    @BeforeEach
+    public  void setup() {
+        myHandler = new MyHandler();
+        mediator = MediatorJ.create();
+    }
+
     @Test
-    public void TestSomething() {
-
-        // Create a mediator
-        MediatorJ mediator = MediatorJ.create();
-
-        // Create a handler
+    public void testSendingRequest() {
+        Handler myHandlerSpy = Mockito.spy(myHandler);
 
         // Register a handler
-        var h = new MyHandler();
-        mediator.register(h);
+        mediator.register(myHandlerSpy);
 
         // Create a request
         var req = new MyRequest();
@@ -32,6 +39,10 @@ public class AppTest {
         mediator.send(req);
 
         // Check that handler was called
+        Mockito.verify(myHandlerSpy).handle(any(IRequest.class));
+    }
+
+    public void testSendingRequestWithReturnValue() {
 
     }
 

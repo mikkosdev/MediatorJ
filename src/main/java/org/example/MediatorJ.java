@@ -40,6 +40,7 @@ public class MediatorJ<T extends Handler> {
             System.out.println("Iterating: " + h.getClazz() + " vs " + req.getClass());
             if (h.getClazz() == req.getClass()) {
                 System.out.println("Found:" + req.getClass());
+                h.handle(req);
             }
         }
     }
