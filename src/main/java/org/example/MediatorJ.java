@@ -53,7 +53,7 @@ public class MediatorJ<T extends Handler> {
     /**
      * Unregister handler
      */
-    public void unregister(IHandler handler) {
+    public void unregister(Handler handler) {
         throw new UnsupportedOperationException();
 //        _handlers.removeIf((h) -> handler.getClass() == handler.getClass());
     }

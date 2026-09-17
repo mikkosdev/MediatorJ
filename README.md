@@ -2,7 +2,7 @@
 
 This is work-in-progress. Do not use yet for anything.
 
-# How sending requests works
+## How sending requests works
 
 - Create a request class that contains the fields that are needed for the handling of that request
   - Request class must extend `IRequest` interface
@@ -14,7 +14,7 @@ This is work-in-progress. Do not use yet for anything.
 - Handler executes it's `handle()` code using the request object
 - Handler may return a value (primitive value or an object) back to the code that called the `send()` method
 
-# How aspects work
+## How aspects work
 
 MediatorJ has also "aspects" which represent cross-cutting concerns that can be run with every request.
 This enables security checks, logging, validation, etc to be centrally.
@@ -29,22 +29,25 @@ There's a matchin `MustRunLast` annotation that communicates and enforces the pr
 
 *Pending*
 
-# To Do
+## To Do
 
 - Ensure the MediatorJ object is singleton and injectable
 - Create unit tests for everything
-- Add ordering to aspects
+- Add ordering to aspects with annotation
 - Check that handlers can return values to the place where the request was sent
 - Register aspects with annotations
 - Register handlers with annotations
 - Test performance and optimize if needed
 - Create package and make it available in Java package repositories
+- Change package names to something sensible
 
-# Run-time dependencies
+## Dependencies
+
+### Run-time dependencies
 
 None.
 
-# Compile-time dependencies
+### Compile-time dependencies
 
 - JUnit 5 for unit tests
 - Mockito for mock objects
