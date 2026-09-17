@@ -14,7 +14,32 @@ public class MediatorJ<T extends Handler> {
     }
 
     /**
-     * Register handler
+     * Register an aspect
+     *
+     * @param aspect   Aspect must extend Aspect abstract class
+     */
+    public void register(Aspect aspect) {
+        aspects.add(aspect);
+
+        System.out.println("Registering: " + aspect);
+        System.out.println("aspect.getClass(): " + aspect.getClass());
+    }
+
+    /**
+     * Unregister an aspect
+     *
+     * @param aspect   Aspect must extend Aspect abstract class
+     */
+    public void unregister(Aspect aspect) {
+        throw new UnsupportedOperationException();
+//        aspects.add(aspect);
+//
+//        System.out.println("Unregistering: " + aspect);
+//        System.out.println("aspect.getClass(): " + aspect.getClass());
+    }
+
+    /**
+     * Register a handler
      *
      * @param handler   Handler must implement IHandler interface
      */
@@ -29,11 +54,18 @@ public class MediatorJ<T extends Handler> {
      * Unregister handler
      */
     public void unregister(IHandler handler) {
+        throw new UnsupportedOperationException();
 //        _handlers.removeIf((h) -> handler.getClass() == handler.getClass());
     }
 
     public void send(IRequest req) {
         System.out.println("Sending");
+
+        // Run request for all aspects
+        for (Aspect a : aspects) {
+            System.out.println("Executing aspect: " + a.getClass());
+            a.execute(req);
+        }
 
         // Find handler that handles the request type
         for(Handler h : handlers) {

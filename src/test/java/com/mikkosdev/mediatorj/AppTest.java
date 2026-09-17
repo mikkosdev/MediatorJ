@@ -18,7 +18,7 @@ public class AppTest {
     private Handler myHandler;
 
     @BeforeEach
-    public  void setup() {
+    public void setup() {
         myHandler = new MyHandler();
         mediator = MediatorJ.create();
     }
@@ -53,7 +53,6 @@ public class AppTest {
 
     // Test handler class
     private class MyHandler extends Handler<MyRequest> {
-
         public MyHandler() {
             super(MyRequest.class);
         }
@@ -61,17 +60,6 @@ public class AppTest {
         @Override
         public void handle(IRequest request) {
             System.out.println("MyHandler here");
-        }
-
-        public void handle(MyRequest request) {
-            System.out.println("MyHandler here");
-        }
-    }
-
-    @AspectClass(index = 0)
-    private class MyAspect extends Aspect {
-        public void execute() {
-            System.out.println("This is run every time a request is being handled.");
         }
     }
 }
