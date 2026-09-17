@@ -26,14 +26,14 @@ public class AspectTest {
     }
 
     // Test handler class
-    private class MyHandler extends Handler<MyRequest> {
+    private class MyHandler extends Handler<MyRequest, Void> {
         public MyHandler() {
             super(MyRequest.class);
         }
 
         @Override
-        public void handle(IRequest request) {
-            System.out.println("MyHandler here");
+        public Void handle(MyRequest request) {
+            return null;
         }
     }
 

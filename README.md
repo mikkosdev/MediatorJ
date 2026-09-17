@@ -35,5 +35,16 @@ There's a matchin `MustRunLast` annotation that communicates and enforces the pr
 - Create unit tests for everything
 - Add ordering to aspects
 - Check that handlers can return values to the place where the request was sent
-- Check performance
+- Register aspects with annotations
+- Register handlers with annotations
+- Test performance and optimize if needed
 - Create package and make it available in Java package repositories
+
+# Run-time dependencies
+
+None.
+
+# Compile-time dependencies
+
+- JUnit 5 for unit tests
+- Mockito for mock objects

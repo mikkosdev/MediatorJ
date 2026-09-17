@@ -6,7 +6,7 @@ package org.example;
  * @param <T>
  * @see org.example.IRequest
  */
-public abstract class Handler<T> implements IHandler {
+public abstract class Handler<T, U> {
     private final Class<T> clazz;
 
     public Handler(Class<T> request) {
@@ -16,4 +16,6 @@ public abstract class Handler<T> implements IHandler {
     public Class<T> getClazz() {
         return this.clazz;
     }
+
+    public abstract U handle(T request);
 }

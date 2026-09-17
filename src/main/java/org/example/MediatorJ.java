@@ -58,7 +58,7 @@ public class MediatorJ<T extends Handler> {
 //        _handlers.removeIf((h) -> handler.getClass() == handler.getClass());
     }
 
-    public void send(IRequest req) {
+    public Object send(IRequest req) {
         System.out.println("Sending");
 
         // Run request for all aspects
@@ -72,9 +72,11 @@ public class MediatorJ<T extends Handler> {
             System.out.println("Iterating: " + h.getClazz() + " vs " + req.getClass());
             if (h.getClazz() == req.getClass()) {
                 System.out.println("Found:" + req.getClass());
-                h.handle(req);
+                return h.handle(req);
             }
         }
+
+        return null;
     }
 
     private void runAspects() {

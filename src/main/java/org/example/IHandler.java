@@ -6,9 +6,9 @@ package org.example;
  * @param <T>
  * @see Handler
  */
-public interface IHandler<T extends IRequest> {
+public interface IHandler<T extends IRequest, U> {
 
-    void handle(T request);
+    U handle(T request);
 }
 
 
