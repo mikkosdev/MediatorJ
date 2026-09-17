@@ -4,6 +4,8 @@ import org.example.Handler;
 import org.example.IRequest;
 import org.example.MediatorJ;
 import org.example.annotations.AspectClass;
+import org.example.annotations.MustRunFirst;
+import org.example.annotations.MustRunLast;
 import org.example.aspects.Aspect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,10 +39,26 @@ public class AspectTest {
         }
     }
 
-    @AspectClass(index = 0)
+    @AspectClass(index = 1)
     private class MyAspect extends Aspect {
         public void execute(IRequest req) {
-            System.out.println("This is run every time a request is being handled.");
+            System.out.println("MyAspect: This is run every time a request is being handled.");
+        }
+    }
+
+    @MustRunFirst
+    @AspectClass
+    private class MyFirstAspect extends Aspect {
+        public void execute(IRequest req) {
+            System.out.println("MyFirstAspect: This is run every time a request is being handled.");
+        }
+    }
+
+    @MustRunLast
+    @AspectClass
+    private class MyLastAspect extends Aspect {
+        public void execute(IRequest req) {
+            System.out.println("MyLastAspect: This is run every time a request is being handled.");
         }
     }
 

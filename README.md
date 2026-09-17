@@ -40,6 +40,9 @@ There's a matchin `MustRunLast` annotation that communicates and enforces the pr
 - Test performance and optimize if needed
 - Create package and make it available in Java package repositories
 - Change package names to something sensible
+- Ensure that an aspect can only be registered once
+- Ensure that a handler can only be registered once
+- Check thread safety / multithreading
 
 ## Dependencies
 
