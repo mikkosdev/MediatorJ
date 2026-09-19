@@ -1,7 +1,6 @@
 package org.mediatorj;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mediatorj.exception.DuplicateHandlerException;
@@ -58,7 +57,6 @@ public class AppTest {
     public void setup() {
         myHandler = new MyHandler();
         myHandlerWithReturn = new MyHandlerWithReturn();
-//        mediator = MediatorJ.getDefault();
         mediator = new MediatorJ();
     }
 

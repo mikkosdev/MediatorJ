@@ -1,6 +1,7 @@
 # MediatorJ
 
-This is work-in-progress. Do not use yet for anything.
+Mediator pattern library for Java with minimal dependencies.
+Programmed without AI.
 
 ## How sending requests works
 
@@ -21,20 +22,12 @@ This enables security checks, logging, validation, etc to be centrally.
 
 Extend your cross-cutting concern from the abstract class `Aspect` and implement the `èxecute()` method which takes an `IRequest` object as a parameter.
 
-Every single request will run through all the aspects.
-
-Aspects can be ordered with the `AspectClass` annotations `index` parameter.
-There's `MustRunFirst` annotation that is just there to communicate to developers the intent that this aspect should always be first, and it throws an error at compile time.
-There's a matchin `MustRunLast` annotation that communicates and enforces the processing to happen last in the aspect chain.
-
-*Pending*
+Every single request will run through all the registered aspects.
 
 ## To Do
 
 - Create unit tests for everything
-- Add ordering to aspects with annotation
-- Register aspects with annotations
-- Register handlers with annotations
+- Ensure that the registering order is the order they're processed in
 - Test performance and optimize if needed
 - Create deployment package and make it available in Java package repositories
 - Ensure that an aspect can only be registered once
@@ -48,7 +41,9 @@ There's a matchin `MustRunLast` annotation that communicates and enforces the pr
 
 - SLF4J API
 
-### Development-time dependencies for this project (not for users) 
+### Development-time dependencies
+
+These are only in use during library development and will not be part of the release artifact.
 
 - JUnit 6 for unit tests
 - Mockito for mock objects

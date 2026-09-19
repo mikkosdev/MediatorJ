@@ -2,15 +2,10 @@ package org.mediatorj;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mediatorj.annotation.AspectClass;
-import org.mediatorj.annotation.MustRunFirst;
-import org.mediatorj.annotation.MustRunLast;
 import org.mediatorj.aspect.Aspect;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 
 public class AspectTest {
@@ -36,26 +31,10 @@ public class AspectTest {
         }
     }
 
-    @AspectClass(index = 1)
     private class MyAspect extends Aspect {
+        public int index = 0;
         public void execute(IRequest req) {
             System.out.println("MyAspect: This is run every time a request is being handled.");
-        }
-    }
-
-    @MustRunFirst
-    @AspectClass
-    private class MyFirstAspect extends Aspect {
-        public void execute(IRequest req) {
-            System.out.println("MyFirstAspect: This is run every time a request is being handled.");
-        }
-    }
-
-    @MustRunLast
-    @AspectClass
-    private class MyLastAspect extends Aspect {
-        public void execute(IRequest req) {
-            System.out.println("MyLastAspect: This is run every time a request is being handled.");
         }
     }
 
@@ -94,29 +73,5 @@ public class AspectTest {
 
         // Check that handler was called
         Mockito.verify(myAspectSpy).execute(any(IRequest.class));
-    }
-
-    @Disabled
-    @Test
-    public void testAspectClassWorks() {
-        // Test that a class can be annotated with the @AspectClass annotation
-        fail("Not implemented yet.");
-    }
-
-    @Disabled
-    @Test
-    public void testThatAspectClassIndexingWorks() {
-        fail("Not implemented yet.");
-    }
-
-    @Disabled
-    @Test
-    public void testMustRunFirstWorks() {
-        fail("Not implemented yet.");
-    }
-
-    @Disabled
-    @Test void testMustRunLastWorks() {
-        fail("Not implemented yet.");
     }
 }
