@@ -3,13 +3,30 @@ package org.mediatorj;
 import org.mediatorj.aspect.Aspect;
 import org.mediatorj.exception.DuplicateHandlerException;
 import org.mediatorj.exception.MissingHandlerException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 public class MediatorJ<T extends Handler> {
 
+    final Logger logger = LoggerFactory.getLogger(MediatorJ.class);
+    private static final MediatorJ INSTANCE = new MediatorJ();
+
     private List<Handler> handlers = new ArrayList<>();
     private List<Aspect> aspects = new ArrayList<>();
+
+    /**
+     * Get the default (singleton) instance.
+     *
+     * This is a convenience method, but you should generally use dependency injection - not this.
+     * If you need multiple instances, just can create them with `new MediatorJ()`.
+     *
+     * @return MediatorJ object instance
+     */
+    public static MediatorJ getDefault() {
+        return INSTANCE;
+    }
 
     /**
      * Register an aspect
@@ -17,10 +34,9 @@ public class MediatorJ<T extends Handler> {
      * @param aspect Aspect must extend Aspect abstract class
      */
     public void register(Aspect aspect) {
-        aspects.add(aspect);
+        logger.debug("Registering aspect <{}>", aspect.getClass());
 
-        System.out.println("Registering: " + aspect);
-        System.out.println("aspect.getClass(): " + aspect.getClass());
+        aspects.add(aspect);
     }
 
     /**
@@ -42,32 +58,38 @@ public class MediatorJ<T extends Handler> {
      * @param handler Handler must implement IHandler interface
      */
     public void register(T handler) {
+        logger.debug("Registering handler for type <{}>", handler.getClass());
+
         if (getHandler(handler.getClazz()) != null) {
             throw new DuplicateHandlerException(handler.getClazz());
         } else {
             handlers.add(handler);
         }
-
-        System.out.println("Registering: " + handler);
-        System.out.println("handler.getClass(): " + handler.getClazz());
     }
 
     /**
      * Unregister handler
      */
     public void unregister(Handler handler) {
-        throw new UnsupportedOperationException();
-//        _handlers.removeIf((h) -> handler.getClass() == handler.getClass());
+        var removed = handlers.removeIf((h) -> h.getClass() == handler.getClass());
+        if(removed) {
+            logger.debug("Unregistered handler for type <{}>", handler.getClass());
+        } else {
+            // TODO: Should I use generic exception here? MissingHandlerException might be better.
+            throw new RuntimeException("Cannot unregister handler that doesn't exist for type: " + handler.getClazz());
+        }
     }
 
     public Object send(IRequest req) {
-        System.out.println("Sending");
+        logger.debug("Sending request with type <{}>", req.getClass());
 
         // Run request for all aspects
-        for (Aspect a : aspects) {
-            System.out.println("Executing aspect: " + a.getClass());
-            a.execute(req);
-        }
+//        for (Aspect a : aspects) {
+//            logger.debug("Executing aspect <{}>", a.getClass());
+//            a.execute(req);
+//        }
+
+        runAspects(req);
 
         Handler h = getHandler(req.getClass());
         // Handle request if handler found
@@ -88,9 +110,16 @@ public class MediatorJ<T extends Handler> {
         return null;
     }
 
-    private void runAspects() {
-        for (Aspect a : aspects) {
-            // Pending
+    private void runAspects(IRequest request) {
+        logger.debug("Running aspects:");
+
+        if (aspects.size() > 0) {
+            for (Aspect a : aspects) {
+                logger.debug("Running aspect <{}>", a.getClass());
+                a.execute(request);
+            }
+        } else {
+            logger.debug("(No aspects)");
         }
     }
 }

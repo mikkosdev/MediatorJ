@@ -83,6 +83,21 @@ public class AppTest {
     }
 
     @Test
+    public void testUnregisteringHandlerThatExists() {
+        mediator.register(myHandler);
+        assertDoesNotThrow(() -> {
+            mediator.unregister(myHandler);
+        });
+    }
+
+    @Test
+    public void testUnregisteringHandlerThatDoesntExist() {
+        assertThrows(RuntimeException.class, () -> {
+            mediator.unregister(myHandler);
+        });
+    }
+
+    @Test
     public void testSendingRequest() {
         Handler myHandlerSpy = Mockito.spy(myHandler);
 

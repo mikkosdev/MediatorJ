@@ -7,6 +7,7 @@ package org.mediatorj;
  * @see org.mediatorj.IRequest
  */
 public abstract class Handler<T, U> {
+
     private final Class<T> clazz;
 
     public Handler(Class<T> request) {

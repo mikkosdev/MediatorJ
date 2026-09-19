@@ -31,21 +31,15 @@ There's a matchin `MustRunLast` annotation that communicates and enforces the pr
 
 ## To Do
 
-- Ensure the MediatorJ object is singleton and injectable
 - Create unit tests for everything
 - Add ordering to aspects with annotation
-- Check that handlers can return values to the place where the request was sent
 - Register aspects with annotations
 - Register handlers with annotations
 - Test performance and optimize if needed
-- Create package and make it available in Java package repositories
-- Change package names to something sensible
+- Create deployment package and make it available in Java package repositories
 - Ensure that an aspect can only be registered once
-- Ensure that a handler can only be registered once
 - Check thread safety / multithreading
-- Add code examples to the README.md
 - Add UML model under doc/
-- Check if any custom exception classes are needed
 - Clean up standard out debug logs
 
 ## Dependencies
@@ -58,13 +52,18 @@ There's a matchin `MustRunLast` annotation that communicates and enforces the pr
 
 - JUnit 6 for unit tests
 - Mockito for mock objects
+- Logback Classic 1.5
 
 ## Code Examples
 
 0. Get MediatorJ instance
 
-Use `new MediatorJ()` to create a new instance. This is a good approach for unit tests and in cases where you want to control the instantiation manually.
-However, in most cases it's probably best to use a dependency injection framework to get the instance(s).
+You have two ways of getting a MediatorJ object:
+
+a) using `new MediatorJ()` to create a new instance. This is a good approach for unit tests and in cases where you want to control the instantiation manually.
+b) using the `MediatorJ.getDefault()` static factory method that always returns the same object. Use carefully!
+ 
+*** It is recommended to use a dependency injection framework to get the instance(s). ***
 
 1. Create a request for your use case:
 
