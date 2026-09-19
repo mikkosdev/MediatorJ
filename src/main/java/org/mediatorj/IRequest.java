@@ -1,4 +1,4 @@
-package org.example;
+package org.mediatorj;
 
 /**
  * Every request class must implement this interface.

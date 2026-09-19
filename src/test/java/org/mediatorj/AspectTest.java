@@ -1,16 +1,13 @@
-package com.mikkosdev.mediatorj;
+package org.mediatorj;
 
-import org.example.Handler;
-import org.example.IRequest;
-import org.example.MediatorJ;
-import org.example.annotation.AspectClass;
-import org.example.annotation.MustRunFirst;
-import org.example.annotation.MustRunLast;
-import org.example.aspect.Aspect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mediatorj.annotation.AspectClass;
+import org.mediatorj.annotation.MustRunFirst;
+import org.mediatorj.annotation.MustRunLast;
+import org.mediatorj.aspect.Aspect;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.fail;

@@ -1,10 +1,10 @@
-package org.example;
+package org.mediatorj;
 
 /**
  * This abstract class is used as superclass for all those classes that handle requests.
  *
  * @param <T>
- * @see org.example.IRequest
+ * @see org.mediatorj.IRequest
  */
 public abstract class Handler<T, U> {
     private final Class<T> clazz;

@@ -1,8 +1,5 @@
-package com.mikkosdev.mediatorj;
+package org.mediatorj;
 
-import org.example.Handler;
-import org.example.IRequest;
-import org.example.MediatorJ;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
-package org.example;
+package org.mediatorj;
 
-import org.example.aspect.Aspect;
+import org.mediatorj.aspect.Aspect;
 
 import java.util.*;
 

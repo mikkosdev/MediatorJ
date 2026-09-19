@@ -1,4 +1,4 @@
-package org.example;
+package org.mediatorj;
 
 /**
  * Every handler class must implement this interface.

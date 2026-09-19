@@ -51,25 +51,26 @@ There's a matchin `MustRunLast` annotation that communicates and enforces the pr
 
 ### Run-time dependencies
 
-None.
+None
 
 ### Compile-time dependencies
 
-- JUnit 5 for unit tests
+- JUnit 6 for unit tests
 - Mockito for mock objects
 
 ## Code Examples
 
 1. Create a request for your use case:
+
 ```Java
-import org.example.IRequest;
+import org.mediatorj.IRequest;
 
 class GetUserRequest implements IRequest {
-    public final String username;
-    
-    public GetUserRequest(String username) {
-        this.username = username;
-    }
+  public final String username;
+
+  public GetUserRequest(String username) {
+    this.username = username;
+  }
 }
 ```
 
@@ -81,29 +82,31 @@ The important thing is that the request should be immutable.
 2. Create a handler for the above use case:
 
 With return value:
-```Java
-import org.example.Handler;
-import org.example.IRequest;
 
-class GetUserHandler extends Handler<GetUserRequest, User> { 
-    @Override
-    public User handle(IRequest request) {
-      var user = userRepository.getUser(request.username);
-      return user;
-    }
+```Java
+import org.mediatorj.Handler;
+import org.mediatorj.IRequest;
+
+class GetUserHandler extends Handler<GetUserRequest, User> {
+  @Override
+  public User handle(IRequest request) {
+    var user = userRepository.getUser(request.username);
+    return user;
+  }
 }
 ```
 
 If you have a handler without return value, use `Void` type, like here:
-```Java
-import org.example.Handler;
-import org.example.IRequest;
 
-class SomeHandler extends Handler<SomeRequest, Void> { 
-    @Override
-    public Void handle(IRequest request) {
-      // <code omitted here>
-    }
+```Java
+import org.mediatorj.Handler;
+import org.mediatorj.IRequest;
+
+class SomeHandler extends Handler<SomeRequest, Void> {
+  @Override
+  public Void handle(IRequest request) {
+    // <code omitted here>
+  }
 }
 ```
 

@@ -1,12 +1,12 @@
-package org.example.exception;
+package org.mediatorj.exception;
 
-import org.example.IRequest;
+import org.mediatorj.IRequest;
 
 /**
  * Exception class for cases where a request was sent but no handler was found.
- * 
- * @see org.example.IRequest
- * @see org.example.Handler
+ *
+ * @see org.mediatorj.IRequest
+ * @see org.mediatorj.Handler
  */
 public class HandlerNotFoundException extends Exception {
     /**
