@@ -52,9 +52,9 @@ There's a matchin `MustRunLast` annotation that communicates and enforces the pr
 
 ### Run-time dependencies
 
-None
+- SLF4J API
 
-### Compile-time dependencies
+### Development-time dependencies for this project (not for users) 
 
 - JUnit 6 for unit tests
 - Mockito for mock objects
@@ -63,12 +63,8 @@ None
 
 0. Get MediatorJ instance
 
-You have two ways of getting a MediatorJ object:
-
-a) using `new MediatorJ()` to create a new instance
-b) using the `MediatorJ.getDefault()` static factory method that always returns the same object.
-
-It is recommended to use a dependency injection framework to get the instance(s).
+Use `new MediatorJ()` to create a new instance. This is a good approach for unit tests and in cases where you want to control the instantiation manually.
+However, in most cases it's probably best to use a dependency injection framework to get the instance(s).
 
 1. Create a request for your use case:
 
@@ -133,8 +129,13 @@ var user = (User) mediator.send(req);
 Notice that you have to cast the return value type for `send()` method.
 
 Or if you have no return value, just do this:
+
 ```Java
 // This code can be anywhere in your application
+@Inject MediatorJ mediator;
+
 var req = new SomeRequest();
-mediator.send(req);
+var x = mediator.send(req);
 ```
+
+Above example uses popular `@Inject` field annotation to show how to get the instance using a dependency injection framework.

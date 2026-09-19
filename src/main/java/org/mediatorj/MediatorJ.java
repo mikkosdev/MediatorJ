@@ -1,32 +1,20 @@
 package org.mediatorj;
 
 import org.mediatorj.aspect.Aspect;
+import org.mediatorj.exception.DuplicateHandlerException;
+import org.mediatorj.exception.MissingHandlerException;
 
 import java.util.*;
 
 public class MediatorJ<T extends Handler> {
 
-    private static final MediatorJ INSTANCE = new MediatorJ();
-
     private List<Handler> handlers = new ArrayList<>();
     private List<Aspect> aspects = new ArrayList<>();
 
     /**
-     * Get the default (singleton) instance.
-     *
-     * This is a convenience method, but you should generally use dependency injection - not this.
-     * If you need multiple instances, just can create them with `new MediatorJ()`.
-     *
-     * @return MediatorJ object instance
-     */
-    public static MediatorJ getDefault() {
-        return INSTANCE;
-    }
-
-    /**
      * Register an aspect
      *
-     * @param aspect   Aspect must extend Aspect abstract class
+     * @param aspect Aspect must extend Aspect abstract class
      */
     public void register(Aspect aspect) {
         aspects.add(aspect);
@@ -38,7 +26,7 @@ public class MediatorJ<T extends Handler> {
     /**
      * Unregister an aspect
      *
-     * @param aspect   Aspect must extend Aspect abstract class
+     * @param aspect Aspect must extend Aspect abstract class
      */
     public void unregister(Aspect aspect) {
         throw new UnsupportedOperationException();
@@ -51,10 +39,14 @@ public class MediatorJ<T extends Handler> {
     /**
      * Register a handler
      *
-     * @param handler   Handler must implement IHandler interface
+     * @param handler Handler must implement IHandler interface
      */
     public void register(T handler) {
-        handlers.add(handler);
+        if (getHandler(handler.getClazz()) != null) {
+            throw new DuplicateHandlerException(handler.getClazz());
+        } else {
+            handlers.add(handler);
+        }
 
         System.out.println("Registering: " + handler);
         System.out.println("handler.getClass(): " + handler.getClazz());
@@ -77,15 +69,22 @@ public class MediatorJ<T extends Handler> {
             a.execute(req);
         }
 
-        // Find handler that handles the request type
-        for(Handler h : handlers) {
-            System.out.println("Iterating: " + h.getClazz() + " vs " + req.getClass());
-            if (h.getClazz() == req.getClass()) {
-                System.out.println("Found:" + req.getClass());
-                return h.handle(req);
-            }
+        Handler h = getHandler(req.getClass());
+        // Handle request if handler found
+        if (h != null) {
+            return h.handle(req);
         }
 
+        // If no handler was found, throw exception
+        throw new MissingHandlerException(req);
+    }
+
+    private Handler getHandler(Class clazz) {
+        for (Handler h : handlers) {
+            if (h.getClazz() == clazz) {
+                return h;
+            }
+        }
         return null;
     }
 

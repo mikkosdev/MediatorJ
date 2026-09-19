@@ -1,11 +1,14 @@
 package org.mediatorj;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mediatorj.exception.DuplicateHandlerException;
+import org.mediatorj.exception.MissingHandlerException;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 public class AppTest {
@@ -55,12 +58,28 @@ public class AppTest {
     public void setup() {
         myHandler = new MyHandler();
         myHandlerWithReturn = new MyHandlerWithReturn();
-        mediator = MediatorJ.getDefault();
+//        mediator = MediatorJ.getDefault();
+        mediator = new MediatorJ();
     }
 
     @AfterEach
     public void tearDown() {
-        // Pending
+        mediator = null;
+    }
+
+    @Test
+    public void testRegisteringHandlerOnce() {
+        assertDoesNotThrow(() -> {
+            mediator.register(myHandler);
+        });
+    }
+
+    @Test
+    public void testRegisteringHandlerTwiceFails() {
+        mediator.register(myHandler);
+        assertThrows(DuplicateHandlerException.class, () -> {
+            mediator.register(myHandler);
+        });
     }
 
     @Test
@@ -95,5 +114,18 @@ public class AppTest {
         // Send the request to the mediator
         var resp = (ReturnValue) mediator.send(req);
         assertEquals("hello", resp.val);
+    }
+
+    @Test
+    public void testMissingHandlerThrowsException() {
+        // Create a request
+        var req = new MyRequest();
+        req.x = 100;
+        req.y = 150;
+
+        // Check that exception is thrown
+        assertThrows(MissingHandlerException.class, () -> {
+            mediator.send(req);
+        });
     }
 }
