@@ -55,7 +55,7 @@ public class AppTest {
     public void setup() {
         myHandler = new MyHandler();
         myHandlerWithReturn = new MyHandlerWithReturn();
-        mediator = MediatorJ.create();
+        mediator = MediatorJ.getDefault();
     }
 
     @AfterEach

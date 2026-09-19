@@ -62,7 +62,7 @@ public class AspectTest {
     @BeforeEach
     void setUp() {
         myHandler = new MyHandler();
-        mediator = MediatorJ.create();
+        mediator = MediatorJ.getDefault();
     }
 
     @AfterEach

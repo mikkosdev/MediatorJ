@@ -46,6 +46,7 @@ There's a matchin `MustRunLast` annotation that communicates and enforces the pr
 - Add code examples to the README.md
 - Add UML model under doc/
 - Check if any custom exception classes are needed
+- Clean up standard out debug logs
 
 ## Dependencies
 
@@ -59,6 +60,15 @@ None
 - Mockito for mock objects
 
 ## Code Examples
+
+0. Get MediatorJ instance
+
+You have two ways of getting a MediatorJ object:
+
+a) using `new MediatorJ()` to create a new instance
+b) using the `MediatorJ.getDefault()` static factory method that always returns the same object.
+
+It is recommended to use a dependency injection framework to get the instance(s).
 
 1. Create a request for your use case:
 

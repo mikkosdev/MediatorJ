@@ -6,11 +6,21 @@ import java.util.*;
 
 public class MediatorJ<T extends Handler> {
 
+    private static final MediatorJ INSTANCE = new MediatorJ();
+
     private List<Handler> handlers = new ArrayList<>();
     private List<Aspect> aspects = new ArrayList<>();
 
-    public static MediatorJ create() {
-        return new MediatorJ();
+    /**
+     * Get the default (singleton) instance.
+     *
+     * This is a convenience method, but you should generally use dependency injection - not this.
+     * If you need multiple instances, just can create them with `new MediatorJ()`.
+     *
+     * @return MediatorJ object instance
+     */
+    public static MediatorJ getDefault() {
+        return INSTANCE;
     }
 
     /**
