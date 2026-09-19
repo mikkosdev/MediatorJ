@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.aspects.Aspect;
+import org.example.aspect.Aspect;
 
 import java.util.*;
 

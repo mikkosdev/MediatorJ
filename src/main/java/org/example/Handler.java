@@ -13,9 +13,21 @@ public abstract class Handler<T, U> {
         this.clazz = request;
     }
 
-    public Class<T> getClazz() {
+    /**
+     * This method returns the class of the request type it matches.
+     *
+     * @return the request class this handler matches
+     */
+    public final Class<T> getClazz() {
         return this.clazz;
     }
 
+    /**
+     * Abstract method that has to be implemented by every handler
+     *
+     * @param request The request that needs to be handler
+     * @return
+     * @see IRequest
+     */
     public abstract U handle(T request);
 }

@@ -43,6 +43,9 @@ There's a matchin `MustRunLast` annotation that communicates and enforces the pr
 - Ensure that an aspect can only be registered once
 - Ensure that a handler can only be registered once
 - Check thread safety / multithreading
+- Add code examples to the README.md
+- Add UML model under doc/
+- Check if any custom exception classes are needed
 
 ## Dependencies
 
@@ -54,3 +57,71 @@ None.
 
 - JUnit 5 for unit tests
 - Mockito for mock objects
+
+## Code Examples
+
+1. Create a request for your use case:
+```Java
+import org.example.IRequest;
+
+class GetUserRequest implements IRequest {
+    public final String username;
+    
+    public GetUserRequest(String username) {
+        this.username = username;
+    }
+}
+```
+
+There are other ways of writing the requests, for example by using *private* instance variables, or using a *record* instead of a class.
+
+The important thing is that the request should be immutable.
+
+
+2. Create a handler for the above use case:
+
+With return value:
+```Java
+import org.example.Handler;
+import org.example.IRequest;
+
+class GetUserHandler extends Handler<GetUserRequest, User> { 
+    @Override
+    public User handle(IRequest request) {
+      var user = userRepository.getUser(request.username);
+      return user;
+    }
+}
+```
+
+If you have a handler without return value, use `Void` type, like here:
+```Java
+import org.example.Handler;
+import org.example.IRequest;
+
+class SomeHandler extends Handler<SomeRequest, Void> { 
+    @Override
+    public Void handle(IRequest request) {
+      // <code omitted here>
+    }
+}
+```
+
+It's a good practice to add the `@Override` annotation.
+
+3. Send the request where you need the action to happen:
+
+```Java
+// This code can be anywhere in your application
+var req = new GetUserRequest("myTestUser");
+var user = (User) mediator.send(req);
+```
+
+Notice that you have to cast the return value type for `send()` method.
+
+Or if you have no return value, just do this:
+```Java
+// This code can be anywhere in your application
+var req = new SomeRequest();
+mediator.send(req);
+```
