@@ -27,7 +27,6 @@ Every single request will run through all the registered aspects.
 ## To Do
 
 - Create unit tests for everything
-- Ensure that the registering order is the order they're processed in
 - Test performance and optimize if needed
 - Create deployment package and make it available in Java package repositories
 - Ensure that an aspect can only be registered once

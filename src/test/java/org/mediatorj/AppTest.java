@@ -47,8 +47,6 @@ public class AppTest {
 
         @Override
         public ReturnValue handle(MyRequest request) {
-            System.out.println("MyHandlerWithReturn here");
-
             return new ReturnValue();
         }
     }
