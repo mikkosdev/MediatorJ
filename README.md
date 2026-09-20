@@ -18,21 +18,19 @@ Programmed without AI.
 ## How aspects work
 
 MediatorJ has also "aspects" which represent cross-cutting concerns that can be run with every request.
-This enables security checks, logging, validation, etc to be centrally.
+This enables security checks, logging, validation, etc to be implemented centrally.
 
 Extend your cross-cutting concern from the abstract class `Aspect` and implement the `èxecute()` method which takes an `IRequest` object as a parameter.
 
-Every single request will run through all the registered aspects.
+Every request will run through all the registered aspects.
 
 ## To Do
 
 - Create unit tests for everything
 - Test performance and optimize if needed
 - Create deployment package and make it available in Java package repositories
-- Ensure that an aspect can only be registered once
 - Check thread safety / multithreading
 - Add UML model under doc/
-- Clean up standard out debug logs
 
 ## Dependencies
 
