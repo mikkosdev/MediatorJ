@@ -9,6 +9,7 @@ import org.mediatorj.IRequest;
  * @see org.mediatorj.Handler
  */
 public class DuplicateHandlerException extends RuntimeException {
+
     public DuplicateHandlerException(Class clazz) {
         super("Handler already registered for type: " + clazz);
     }

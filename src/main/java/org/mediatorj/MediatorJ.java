@@ -3,6 +3,7 @@ package org.mediatorj;
 import org.mediatorj.aspect.Aspect;
 import org.mediatorj.exception.DuplicateAspectException;
 import org.mediatorj.exception.DuplicateHandlerException;
+import org.mediatorj.exception.MissingAspectException;
 import org.mediatorj.exception.MissingHandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +58,7 @@ public class MediatorJ<T extends Handler> {
             logger.debug("Unregistered aspect <{}>", aspect.getClass());
         } else {
             // TODO: Should I use generic exception here? MissingHandlerException might be better.
-            throw new RuntimeException("Cannot unregister aspect that doesn't exist: " + aspect.getClass());
+            throw new MissingAspectException(aspect.getClass());
         }
     }
 
@@ -87,7 +88,7 @@ public class MediatorJ<T extends Handler> {
             logger.debug("Unregistered handler for type <{}>", handler.getClass());
         } else {
             // TODO: Should I use generic exception here? MissingHandlerException might be better.
-            throw new RuntimeException("Cannot unregister handler that doesn't exist for type: " + handler.getClazz());
+            throw new MissingHandlerException(handler.getClazz());
         }
     }
 
@@ -109,7 +110,7 @@ public class MediatorJ<T extends Handler> {
         }
 
         // If no handler was found, throw exception
-        throw new MissingHandlerException(req);
+        throw new MissingHandlerException(req.getClass());
     }
 
     private Handler getHandler(Class clazz) {

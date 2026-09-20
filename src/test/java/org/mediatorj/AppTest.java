@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mediatorj.exception.DuplicateHandlerException;
+import org.mediatorj.exception.MissingAspectException;
 import org.mediatorj.exception.MissingHandlerException;
 import org.mockito.Mockito;
 
@@ -88,7 +89,7 @@ public class AppTest {
 
     @Test
     public void testUnregisteringHandlerThatDoesntExist() {
-        assertThrows(RuntimeException.class, () -> {
+        assertThrows(MissingHandlerException.class, () -> {
             mediator.unregister(myHandler);
         });
     }

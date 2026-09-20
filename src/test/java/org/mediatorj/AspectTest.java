@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mediatorj.aspect.Aspect;
 import org.mediatorj.exception.DuplicateAspectException;
+import org.mediatorj.exception.MissingAspectException;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +98,7 @@ public class AspectTest {
 
         // Do it once
         mediator.unregister(myAspect);
-        assertThrows(RuntimeException.class, () -> {
+        assertThrows(MissingAspectException.class, () -> {
             // Doing it twice should throw exception
             mediator.unregister(myAspect);
         });
