@@ -1,6 +1,7 @@
 package org.mediatorj;
 
 import org.mediatorj.aspect.Aspect;
+import org.mediatorj.exception.DuplicateAspectException;
 import org.mediatorj.exception.DuplicateHandlerException;
 import org.mediatorj.exception.MissingHandlerException;
 import org.slf4j.Logger;
@@ -36,7 +37,11 @@ public class MediatorJ<T extends Handler> {
     public void register(Aspect aspect) {
         logger.debug("Registering aspect <{}>", aspect.getClass());
 
-        aspects.add(aspect);
+        if (getAspect(aspect.getClass()) != null) {
+            throw new DuplicateAspectException(aspect.getClass());
+        } else {
+            aspects.add(aspect);
+        }
     }
 
     /**
@@ -45,11 +50,15 @@ public class MediatorJ<T extends Handler> {
      * @param aspect Aspect must extend Aspect abstract class
      */
     public void unregister(Aspect aspect) {
-        throw new UnsupportedOperationException();
-//        aspects.add(aspect);
-//
-//        System.out.println("Unregistering: " + aspect);
-//        System.out.println("aspect.getClass(): " + aspect.getClass());
+        logger.debug("Unregistering aspect <{}>", aspect.getClass());
+
+        var removed = aspects.removeIf((a) -> a.getClass() == aspect.getClass());
+        if(removed) {
+            logger.debug("Unregistered aspect <{}>", aspect.getClass());
+        } else {
+            // TODO: Should I use generic exception here? MissingHandlerException might be better.
+            throw new RuntimeException("Cannot unregister aspect that doesn't exist: " + aspect.getClass());
+        }
     }
 
     /**
@@ -71,6 +80,8 @@ public class MediatorJ<T extends Handler> {
      * Unregister handler
      */
     public void unregister(Handler handler) {
+        logger.debug("Unregistering handler for type <{}>", handler.getClass());
+
         var removed = handlers.removeIf((h) -> h.getClass() == handler.getClass());
         if(removed) {
             logger.debug("Unregistered handler for type <{}>", handler.getClass());
@@ -105,6 +116,15 @@ public class MediatorJ<T extends Handler> {
         for (Handler h : handlers) {
             if (h.getClazz() == clazz) {
                 return h;
+            }
+        }
+        return null;
+    }
+
+    private Aspect getAspect(Class clazz) {
+        for (Aspect a : aspects) {
+            if (a.getClass() == clazz) {
+                return a;
             }
         }
         return null;

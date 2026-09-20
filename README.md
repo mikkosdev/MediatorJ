@@ -132,3 +132,23 @@ var x = mediator.send(req);
 ```
 
 Above example uses popular `@Inject` field annotation to show how to get the instance using a dependency injection framework.
+
+4. Add an aspect that is run for every request:
+
+Create aspects like this:
+```Java
+private class MyAspect extends Aspect {
+  public void execute(IRequest req) {
+      // <code omitted here>
+  }
+}
+```
+
+And add them to the MediatorJ like this:
+```Java
+// This code should be in your applications initialization section
+mediator.register(new MyAspect());
+mediator.register(new AnotherAspect());
+```
+
+The implementation for aspects is Java `ArrayList` based, so the order is preserved.
