@@ -1,12 +1,13 @@
-package org.mediatorj.exception;
+package org.mikkosdev.mediatorj.exception;
 
-import org.mediatorj.IRequest;
+import org.mikkosdev.mediatorj.IRequest;
+import org.mikkosdev.mediatorj.Handler;
 
 /**
  * Unchecked exception for cases where a request was sent but no handler was found.
  *
- * @see org.mediatorj.IRequest
- * @see org.mediatorj.Handler
+ * @see IRequest
+ * @see Handler
  */
 public class MissingHandlerException extends RuntimeException {
 

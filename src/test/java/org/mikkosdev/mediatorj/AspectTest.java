@@ -1,11 +1,11 @@
-package org.mediatorj;
+package org.mikkosdev.mediatorj;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mediatorj.aspect.Aspect;
-import org.mediatorj.exception.DuplicateAspectException;
-import org.mediatorj.exception.MissingAspectException;
+import org.mikkosdev.mediatorj.aspect.Aspect;
+import org.mikkosdev.mediatorj.exception.DuplicateAspectException;
+import org.mikkosdev.mediatorj.exception.MissingAspectException;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

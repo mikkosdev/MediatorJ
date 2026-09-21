@@ -1,10 +1,10 @@
-package org.mediatorj;
+package org.mikkosdev.mediatorj;
 
-import org.mediatorj.aspect.Aspect;
-import org.mediatorj.exception.DuplicateAspectException;
-import org.mediatorj.exception.DuplicateHandlerException;
-import org.mediatorj.exception.MissingAspectException;
-import org.mediatorj.exception.MissingHandlerException;
+import org.mikkosdev.mediatorj.aspect.Aspect;
+import org.mikkosdev.mediatorj.exception.DuplicateAspectException;
+import org.mikkosdev.mediatorj.exception.DuplicateHandlerException;
+import org.mikkosdev.mediatorj.exception.MissingAspectException;
+import org.mikkosdev.mediatorj.exception.MissingHandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,15 +92,17 @@ public class MediatorJ<T extends Handler> {
         }
     }
 
+    /**
+     * This method does the dispatching of requests to handlers and aspects.
+     *
+     * @param req Object that implements `IRequest` interface
+     * @return Return value defined by the handler, must be object type
+     * @see IRequest
+     */
     public Object send(IRequest req) {
         logger.debug("Sending request with type <{}>", req.getClass());
 
         // Run request for all aspects
-//        for (Aspect a : aspects) {
-//            logger.debug("Executing aspect <{}>", a.getClass());
-//            a.execute(req);
-//        }
-
         runAspects(req);
 
         Handler h = getHandler(req.getClass());
@@ -113,6 +115,7 @@ public class MediatorJ<T extends Handler> {
         throw new MissingHandlerException(req.getClass());
     }
 
+    // Find handler with class
     private Handler getHandler(Class clazz) {
         for (Handler h : handlers) {
             if (h.getClazz() == clazz) {
@@ -122,6 +125,7 @@ public class MediatorJ<T extends Handler> {
         return null;
     }
 
+    // Find aspect with class
     private Aspect getAspect(Class clazz) {
         for (Aspect a : aspects) {
             if (a.getClass() == clazz) {
@@ -131,9 +135,11 @@ public class MediatorJ<T extends Handler> {
         return null;
     }
 
+    // Run all aspects
     private void runAspects(IRequest request) {
         logger.debug("Running aspects:");
 
+        // If any aspects have been registered, run the request against them
         if (aspects.size() > 0) {
             for (Aspect a : aspects) {
                 logger.debug("Running aspect <{}>", a.getClass());

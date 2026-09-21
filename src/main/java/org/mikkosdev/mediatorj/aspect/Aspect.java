@@ -1,6 +1,6 @@
-package org.mediatorj.aspect;
+package org.mikkosdev.mediatorj.aspect;
 
-import org.mediatorj.IRequest;
+import org.mikkosdev.mediatorj.IRequest;
 
 /**
  * Aspect represent cross-cutting concerns in an application that are run every time a request is handled.

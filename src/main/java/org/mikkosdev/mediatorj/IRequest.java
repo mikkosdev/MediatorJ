@@ -1,4 +1,4 @@
-package org.mediatorj;
+package org.mikkosdev.mediatorj;
 
 /**
  * Every request class must implement this interface.

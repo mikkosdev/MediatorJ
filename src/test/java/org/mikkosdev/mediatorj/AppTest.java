@@ -1,11 +1,10 @@
-package org.mediatorj;
+package org.mikkosdev.mediatorj;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mediatorj.exception.DuplicateHandlerException;
-import org.mediatorj.exception.MissingAspectException;
-import org.mediatorj.exception.MissingHandlerException;
+import org.mikkosdev.mediatorj.exception.DuplicateHandlerException;
+import org.mikkosdev.mediatorj.exception.MissingHandlerException;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;

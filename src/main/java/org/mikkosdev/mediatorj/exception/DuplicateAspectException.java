@@ -1,4 +1,4 @@
-package org.mediatorj.exception;
+package org.mikkosdev.mediatorj.exception;
 
 public class DuplicateAspectException extends RuntimeException {
 

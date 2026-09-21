@@ -1,10 +1,11 @@
-package org.mediatorj;
+package org.mikkosdev.mediatorj;
 
 /**
  * This abstract class is used as superclass for all those classes that handle requests.
  *
- * @param <T>
- * @see org.mediatorj.IRequest
+ * @param <T> Type of request (@see IRequest) class that the derived handler class will handle
+ * @param <U> Type of the return value
+ * @see IRequest
  */
 public abstract class Handler<T, U> {
 
@@ -27,7 +28,7 @@ public abstract class Handler<T, U> {
      * Abstract method that has to be implemented by every handler
      *
      * @param request The request that needs to be handler
-     * @return
+     * @return Return value with type U
      * @see IRequest
      */
     public abstract U handle(T request);

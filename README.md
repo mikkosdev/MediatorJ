@@ -60,7 +60,7 @@ b) using the `MediatorJ.getDefault()` static factory method that always returns 
 1. Create a request for your use case:
 
 ```Java
-import org.mediatorj.IRequest;
+import org.mikkosdev.mediatorj.IRequest;
 
 class GetUserRequest implements IRequest {
   public final String username;
@@ -81,8 +81,8 @@ The important thing is that the request should be immutable.
 With return value:
 
 ```Java
-import org.mediatorj.Handler;
-import org.mediatorj.IRequest;
+import org.mikkosdev.mediatorj.Handler;
+import org.mikkosdev.mediatorj.IRequest;
 
 class GetUserHandler extends Handler<GetUserRequest, User> {
   @Override
@@ -96,8 +96,8 @@ class GetUserHandler extends Handler<GetUserRequest, User> {
 If you have a handler without return value, use `Void` type, like here:
 
 ```Java
-import org.mediatorj.Handler;
-import org.mediatorj.IRequest;
+import org.mikkosdev.mediatorj.Handler;
+import org.mikkosdev.mediatorj.IRequest;
 
 class SomeHandler extends Handler<SomeRequest, Void> {
   @Override
