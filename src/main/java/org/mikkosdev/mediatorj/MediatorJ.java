@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class MediatorJ<T extends Handler> {
 
@@ -18,9 +20,13 @@ public class MediatorJ<T extends Handler> {
     private List<Handler> handlers = new ArrayList<>();
     private List<Aspect> aspects = new ArrayList<>();
 
+    private final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
+    private final ReentrantReadWriteLock.ReadLock readLock = rwLock.readLock();
+    private final ReentrantReadWriteLock.WriteLock writeLock = rwLock.writeLock();
+
     /**
      * Get the default (singleton) instance.
-     *
+     * <p>
      * This is a convenience method, but you should generally use dependency injection - not this.
      * If you need multiple instances, just can create them with `new MediatorJ()`.
      *
@@ -35,13 +41,18 @@ public class MediatorJ<T extends Handler> {
      *
      * @param aspect Aspect must extend Aspect abstract class
      */
-    public void register(Aspect aspect) {
+    public synchronized void register(Aspect aspect) {
         logger.debug("Registering aspect <{}>", aspect.getClass());
 
         if (getAspect(aspect.getClass()) != null) {
             throw new DuplicateAspectException(aspect.getClass());
         } else {
-            aspects.add(aspect);
+            writeLock.lock();
+            try {
+                aspects.add(aspect);
+            } finally {
+                writeLock.unlock();
+            }
         }
     }
 
@@ -50,11 +61,19 @@ public class MediatorJ<T extends Handler> {
      *
      * @param aspect Aspect must extend Aspect abstract class
      */
-    public void unregister(Aspect aspect) {
+    public synchronized void unregister(Aspect aspect) {
         logger.debug("Unregistering aspect <{}>", aspect.getClass());
 
-        var removed = aspects.removeIf((a) -> a.getClass() == aspect.getClass());
-        if(removed) {
+        var removed = false;
+
+        writeLock.lock();
+        try {
+            removed = aspects.removeIf((a) -> a.getClass() == aspect.getClass());
+        } finally {
+            writeLock.unlock();
+        }
+
+        if (removed) {
             logger.debug("Unregistered aspect <{}>", aspect.getClass());
         } else {
             // TODO: Should I use generic exception here? MissingHandlerException might be better.
@@ -67,24 +86,37 @@ public class MediatorJ<T extends Handler> {
      *
      * @param handler Handler must implement IHandler interface
      */
-    public void register(T handler) {
+    public synchronized void register(T handler) {
         logger.debug("Registering handler for type <{}>", handler.getClass());
 
         if (getHandler(handler.getClazz()) != null) {
             throw new DuplicateHandlerException(handler.getClazz());
         } else {
-            handlers.add(handler);
+            writeLock.lock();
+            try {
+                handlers.add(handler);
+            } finally {
+                writeLock.unlock();
+            }
         }
     }
 
     /**
      * Unregister handler
      */
-    public void unregister(Handler handler) {
+    public synchronized void unregister(Handler handler) {
         logger.debug("Unregistering handler for type <{}>", handler.getClass());
 
-        var removed = handlers.removeIf((h) -> h.getClass() == handler.getClass());
-        if(removed) {
+        var removed = false;
+
+        writeLock.lock();
+        try {
+            removed = handlers.removeIf((h) -> h.getClass() == handler.getClass());
+        } finally {
+            writeLock.unlock();
+        }
+
+        if (removed) {
             logger.debug("Unregistered handler for type <{}>", handler.getClass());
         } else {
             // TODO: Should I use generic exception here? MissingHandlerException might be better.
@@ -102,10 +134,19 @@ public class MediatorJ<T extends Handler> {
     public Object send(IRequest req) {
         logger.debug("Sending request with type <{}>", req.getClass());
 
-        // Run request for all aspects
-        runAspects(req);
+        Handler h = null;
 
-        Handler h = getHandler(req.getClass());
+        readLock.lock();
+        try {
+            // Try to find a handler for the request
+            h = getHandler(req.getClass());
+
+            // Run request for all aspects
+            runAspects(req);
+        } finally {
+            readLock.unlock();
+        }
+
         // Handle request if handler found
         if (h != null) {
             return h.handle(req);

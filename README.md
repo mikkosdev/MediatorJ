@@ -1,18 +1,20 @@
 # MediatorJ
 
+WORK IN PROGRESS - NOT YET RELEASED.
+
 Mediator pattern library for Java with minimal dependencies.
 Programmed without AI.
 
 ## How it works
 
 - Create a request class that contains the fields that are needed for the handling of that request
-  - Request class must extend `IRequest` interface
-- Create a handler class that is called whenever a Request of fitting type is dispatched
+  - Request class must implement `IRequest` interface
+- Create a handler class that is called whenever a request of fitting type is dispatched
   - Handler class must extend `Handler` abstract class
 - Dispatch (send) the request to the Mediator component:
   - `mediator.send(request);`
-- Mediator finds a handler for the request and calls its `handle()`method, passing the request object to it
-- Handler executes it's `handle()` code using the request object
+- Mediator finds a handler for the request and calls its `handle()` method, passing the request object to it
+- Handler executes its `handle()` code using the request object
 - Handler may return a value (primitive value or an object) back to the code that called the `send()` method
 
 ## How aspects work
@@ -20,9 +22,15 @@ Programmed without AI.
 MediatorJ has also "aspects" which represent cross-cutting concerns that can be run with every request.
 This enables security checks, logging, validation, etc to be implemented centrally.
 
-Extend your cross-cutting concern from the abstract class `Aspect` and implement the `èxecute()` method which takes an `IRequest` object as a parameter.
+Extend your cross-cutting concern from the abstract class `Aspect` and implement the `execute()` method which takes an `IRequest` object as a parameter.
 
-Every request will run through all the registered aspects.
+- Every request will run through all the registered aspects *before* the matching handler is run.
+- Aspects are run in their registration order.
+- Aspects are run *even if no matching handler is found* to enable logging those requests that didn't get handled
+
+Current limitation:
+
+- Aspects must not register/unregister handlers or aspects because of the locking mechanism employed by the MediatorJ object. Doing so could cause a deadlock.
 
 ## Usage with Maven
 ```XML
@@ -59,6 +67,10 @@ dependencies {
 - Create deployment package and make it available in Java package repositories
 - Check thread safety / multithreading
 - Add UML model under doc/
+- Study what should be done with exceptions during aspect processing
+  - Catch, report and process the remaining?
+  - Let exception propagate and skip the remaining processing?
+- Should running aspects be optional if no matching handler is found?
 
 ## Dependencies
 
@@ -180,9 +192,13 @@ private class MyAspect extends Aspect {
 
 And add them to the MediatorJ like this:
 ```Java
-// This code should be in your applications initialization section
+// This code should be in your application's initialization section
 mediator.register(new MyAspect());
 mediator.register(new AnotherAspect());
 ```
 
 The implementation for aspects is Java `ArrayList` based, so the order is preserved.
+
+# UML model
+
+![Class Diagram](https://github.com/mikkosdev/MediatorJ/tree/main/doc/DomainModel.drawio.png)
