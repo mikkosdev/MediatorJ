@@ -3,7 +3,7 @@
 Mediator pattern library for Java with minimal dependencies.
 Programmed without AI.
 
-## How sending requests works
+## How it works
 
 - Create a request class that contains the fields that are needed for the handling of that request
   - Request class must extend `IRequest` interface
@@ -23,6 +23,34 @@ This enables security checks, logging, validation, etc to be implemented central
 Extend your cross-cutting concern from the abstract class `Aspect` and implement the `èxecute()` method which takes an `IRequest` object as a parameter.
 
 Every request will run through all the registered aspects.
+
+## Usage with Maven
+```XML
+
+<dependencies>
+  <dependency>
+    <groupId>org.mikkosdev</groupId>
+    <artifactId>mediatorj</artifactId>
+    <version>1.0.0</version>
+  </dependency>
+</dependencies>
+```
+
+## Usage with Gradle
+
+Groovy:
+```Gradle
+dependencies {
+    implementation 'org.mikkosdev:mediatorj:1.0.0'
+}
+```
+
+Kotlin:
+```Gradle
+dependencies {
+    implementation("org.mikkosdev:mediatorj:1.0.0")
+}
+```
 
 ## To Do
 
@@ -85,8 +113,12 @@ import org.mikkosdev.mediatorj.Handler;
 import org.mikkosdev.mediatorj.IRequest;
 
 class GetUserHandler extends Handler<GetUserRequest, User> {
+  public GetUserHandler() {
+    super(MyRequest.class);
+  }
+
   @Override
-  public User handle(IRequest request) {
+  public User handle(GetUserRequest request) {
     var user = userRepository.getUser(request.username);
     return user;
   }
@@ -100,8 +132,12 @@ import org.mikkosdev.mediatorj.Handler;
 import org.mikkosdev.mediatorj.IRequest;
 
 class SomeHandler extends Handler<SomeRequest, Void> {
+  public SomeHandler() {
+    super(MyRequest.class);
+  }
+
   @Override
-  public Void handle(IRequest request) {
+  public Void handle(SomeRequest request) {
     // <code omitted here>
   }
 }
