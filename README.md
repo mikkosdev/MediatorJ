@@ -201,4 +201,4 @@ The implementation for aspects is Java `ArrayList` based, so the order is preser
 
 # UML model
 
-![Class Diagram](https://github.com/mikkosdev/MediatorJ/tree/main/doc/DomainModel.drawio.png)
+[Class Diagram](https://github.com/mikkosdev/MediatorJ/blob/main/doc/DomainModel.drawio.png?raw=true)
