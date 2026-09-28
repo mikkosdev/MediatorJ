@@ -16,6 +16,7 @@ import static org.mockito.ArgumentMatchers.any;
 public class AspectTest {
 
     final Logger logger = LoggerFactory.getLogger(AspectTest.class);
+
     private MediatorJ mediator;
     private Handler myHandler;
     private Aspect myAspect;
