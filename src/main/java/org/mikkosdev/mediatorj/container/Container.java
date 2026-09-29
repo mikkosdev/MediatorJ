@@ -33,6 +33,7 @@ public class Container {
             o.sendMessage(request);
         } else {
             logger.warn("Object not found!");
+            throw new IllegalArgumentException("Object with id <" + id + "> not found");
         }
     }
 }

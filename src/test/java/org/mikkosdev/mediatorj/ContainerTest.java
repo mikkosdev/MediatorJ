@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 public class ContainerTest {
@@ -49,10 +50,6 @@ public class ContainerTest {
     }
 
     private class MyAddressableObject extends AddressableObject {
-//        @Override
-//        public void sendMessage(IRequest request) {
-//            logger.debug("Called!");
-//        }
     }
 
     @BeforeEach
@@ -84,5 +81,16 @@ public class ContainerTest {
 
         // Check that sendMessage() was called
         Mockito.verify(mySpy).sendMessage(any(IRequest.class));
+    }
+
+    @Test
+    public void testSendingMessageToNonExistentObjectThrows() {
+        var uuid = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        var request = new MyRequest();
+
+        // Send message to a non-existent object
+        assertThrows(Exception.class, () -> {
+            myContainer.sendMessage(uuid, request);
+        });
     }
 }
