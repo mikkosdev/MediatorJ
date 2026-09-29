@@ -17,7 +17,7 @@ public class AddressableObjectTest {
     final Logger logger = LoggerFactory.getLogger(ContainerTest.class);
 
     private Container myContainer;
-    private AddressableObject myAddressableObject;
+    private MyAddressableObject myAddressableObject;
     private MyRequest myRequest;
 
     // Test request
@@ -28,6 +28,9 @@ public class AddressableObjectTest {
 
     // Test addressable object
     private class MyAddressableObject extends AddressableObject {
+        public IRequest consumeMessage() {
+            return getNextMessage();
+        }
     }
 
     @BeforeEach
@@ -45,12 +48,26 @@ public class AddressableObjectTest {
     @Test
     public void testSendMessageWorks() {
         // Check default size
-        assertEquals(myAddressableObject.getInboxSize(), 0);
+        assertEquals(0, myAddressableObject.getInboxSize());
 
         // Send one message
         myAddressableObject.sendMessage(myRequest);
 
         // Check size has grown by one
-        assertEquals(myAddressableObject.getInboxSize(), 1);
+        assertEquals(1, myAddressableObject.getInboxSize());
+    }
+
+    @Test
+    public void testConsumingMessageWorks() {
+        // Send one message
+        myAddressableObject.sendMessage(myRequest);
+
+        // Check size is one
+        assertEquals(1, myAddressableObject.getInboxSize());
+
+        var request = myAddressableObject.consumeMessage();
+
+        // Check size is back to zero
+        assertEquals(0, myAddressableObject.getInboxSize());
     }
 }

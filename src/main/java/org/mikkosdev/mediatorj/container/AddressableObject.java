@@ -25,5 +25,4 @@ public abstract class AddressableObject {
     protected IRequest getNextMessage() {
         return inbox.poll();
     }
-
 }
